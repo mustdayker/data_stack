@@ -1,6 +1,6 @@
 # data_stack
  
-## Набор наработанных шаблонов
+## Сборник полезностей по обработке данных
 
 ### Основное:
 - [Airflow](https://github.com/mustdayker/data_stack/tree/main/airflow) - Шаблоны автоматизации и работы с БД
