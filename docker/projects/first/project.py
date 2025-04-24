@@ -4,7 +4,7 @@ import time
 import numpy as np
 from tqdm import tqdm
 
-total = 100
+total = 1000
 iter_tqdm = tqdm(range(total))
 for i in iter_tqdm:
     iter_tqdm.set_description(f"x = {i/100}, sin = {np.sin(i/100):.4f}")
