@@ -6,4 +6,5 @@ WORKDIR /app
 COPY ./flaskprj .
 EXPOSE 4000
 USER userflask
-CMD ["python", "site.py"]
+VOLUME /app
+CMD ["python", "siteflask.py"]
