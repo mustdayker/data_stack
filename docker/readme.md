@@ -9,7 +9,7 @@
 `wsl --update`                   | Обновить WSL
 `docker`                         | Проверить что докер запущен, а так же список команд
 `docker version`                 | Версия докера
-'docker pull image_name:version' | Скачать образ из docker-hub. Например `docker pull python:3.14.0a7`
+`docker pull image_name:version` | Скачать образ из docker-hub. Например `docker pull python:3.14.0a7`
 `docker images` | Вывод доступных образов
 `docker run image_name:version` | Создать и запустить контейнер на основе образа. Если образа нет в докер она будет скачан из docker hub
 `docker ps` | Вывод информации о запущенных контейнерах
