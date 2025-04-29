@@ -7,7 +7,7 @@ RUN pip install flask psycopg2-binary
 EXPOSE 4000
 
 WORKDIR /app
-COPY ./flaskprj .
+COPY . .
 
 USER userflask
 CMD ["python", "site.py"]
