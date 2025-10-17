@@ -22,9 +22,7 @@ def index():
     conn.close()
     
 
-    # html_code = '<h1>Hello from Docker!</h1>' + f'{"<p>".join(map(str, records))}'
-
-    html_code = """
+    hello_code = """
     <!DOCTYPE html>
     <html lang="ru">
     <head>
@@ -79,7 +77,7 @@ def index():
             <p>Это простая приветственная страница, которую вы можете настроить по своему вкусу.</p>
             <button onclick="showMessage()" class="btn">Узнать больше</button>
         </div>
-    
+
         <script>
             function showMessage() {
                 alert("Ты пидор!");
@@ -88,6 +86,9 @@ def index():
     </body>
     </html>
     """
+
+    html_code = f'{hello_code}' + f'{"<p>".join(map(str, records))}'
+
 
     return html_code
 
