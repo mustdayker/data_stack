@@ -1,0 +1,62 @@
+services: # список собираемых сервисов (контейнеров)
+  postgres: # Название сервиса 
+    image: postgres:17-alpine # Имя образа, на основе которого будет создан контейнер
+    container_name: psgr # Имя контейнера
+    environment: # перечисление параметров
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=mydata
+    volumes: # Монтирование тома
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - dbnet
+  adminer:
+    image: adminer # Имя образа, на основе которого будет создан контейнер
+    container_name: adminer # Имя создаваемого контейнера
+    ports:
+      - "127.0.0.1:8080:8080"
+    links:
+      - "postgres:db" # в алиасе прописывается не название контейнера, а название сервиса
+    networks:
+      - dbnet
+    depends_on: # этот параметр указывает, какой сервис должен быть запущен перед adminer
+      - postgres
+  webflask: # контейнер Flask мы соберем не на основе образа, а на основе докер файла
+    build: flaskprj # Для этого укажем путь к Dockerfile, пишем относительный путь
+    image: flask-back # Имя образа, который будет создан на основе Dockerfile
+    container_name: flsite
+    links:    
+      - "postgres:dbps" # в алиасе прописывается не название контейнера, а название сервиса
+    networks:
+      - dbnet
+    ports:
+      - "127.0.0.1:8000:4000"
+    volumes: # Монтирование тома
+      - ./flaskprj:/app # Тут монтируем локальную папку
+    depends_on: # этот параметр указывает, какой сервис должен быть запущен перед adminer
+      - postgres
+
+networks: # Создать сеть
+  dbnet: # Имя сети
+    driver: bridge # Тип сети bridge, для взаимодействия микросервисов
+
+volumes: # Создание тома
+  postgres-data:
+
+
+# POSTGRES
+# docker run -d --rm --name psgr --network dbnet 
+# -e POSTGRES_DB=mydata -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=1234 
+# -v postgres-data:/var/lib/postgresql/data postgres:17-alpine
+
+# ADMINER
+# docker run --rm -d --network dbnet --link psgr:db -p 8080:8080 adminer
+
+# FLASK
+# docker run --rm --network dbnet --link psgr:dbps -p 8000:4000 
+# -v ${PWD}/flaskprj:/app -d flask-back
+
+
+
+
+

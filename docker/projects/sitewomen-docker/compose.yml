@@ -1,28 +1,61 @@
 services: # список собираемых сервисов (контейнеров)
-  postgres: # Название сервиса 
-    image: postgres:17-alpine # Имя образа, на основе которого будет создан контейнер
-    container_name: psgr # Имя контейнера
-    environment: # перечисление параметров
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=mydata
-    volumes: # Монтирование тома
-      - postgres-data:/var/lib/postgresql/data
+  sitewomen:
+    build: ./sitewomen
+    image: sitewomen
+    container_name: sitewomen
+    restart: always # если контейнер вдруг остановится, то попытается рестартануть
+    command: "python manage.py runserver 0.0.0.0:8000" # Запуск команды на старте
+    env_file:
+      - .env # Подключение файла окружения
+    links:
+      - "postgres:dbps" # Создаем алиас при обращении к базе данных
     networks:
       - dbnet
+    volumes:
+      - ./sitewomen:/app/www/sitewomen # связываем каталог sitewomen с каталогом внутри контейнера
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
   adminer:
     image: adminer # Имя образа, на основе которого будет создан контейнер
     container_name: adminer # Имя создаваемого контейнера
     ports:
-      - "127.0.0.1:8080:8080"
+      - "8080:8080"
     links:
       - "postgres:db" # в алиасе прописывается не название контейнера, а название сервиса
     networks:
       - dbnet
     depends_on: # этот параметр указывает, какой сервис должен быть запущен перед adminer
       - postgres
+
+  postgres: # Название сервиса 
+    image: postgres:17-alpine # Имя образа, на основе которого будет создан контейнер
+    container_name: psgr # Имя контейнера
+    volumes: # Монтирование тома
+      - postgres-data:/var/lib/postgresql/data
+    environment: # перечисление параметров
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+                    # Когда мы пишем конструкцию ${DATABASE_NAME}
+                    # внутри скобок можем указать переменные среды
+                    # Эти переменные среды мы опишем отдельным файлом
+                    # Чтобы не хардкодить учетные данне в YAML файле
+                    # для этого создадим файл .env рядом с compose.yml
+    networks:
+      - dbnet
+
+
+
+
+
+
+
+
   webflask: # контейнер Flask мы соберем не на основе образа, а на основе докер файла
-    build: ./flaskprj # Для этого укажем путь к Dockerfile, пишем относительный путь
+    build: flaskprj # Для этого укажем путь к Dockerfile, пишем относительный путь
     image: flask-back # Имя образа, который будет создан на основе Dockerfile
     container_name: flsite
     links:    
