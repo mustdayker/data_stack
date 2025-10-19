@@ -1,5 +1,19 @@
 
-# Новое
+# Заходим
+
+- **Airflow:** http://localhost:8080 Логин: `admin` Пароль: `admin`
+- **Jupyter:** http://localhost:8888 Токен: `dataengineer`
+- **Superset:** http://localhost:8088 Логин: `admin` Пароль: `admin`
+
+### PostgreSQL - База данных
+Подключение:
+- Хост: `localhost`
+- Порт: `5432`
+- База: `airflow` (для Airflow) или `learn_base` (для ваших данных)
+- Пользователь: `airflow`
+- Пароль: `airflow`
+
+### Папки
 
 - **Ноутбуки:** `./jupyter/notebooks/`
 - **DAG'и Airflow:** `./airflow/dags/`
@@ -27,18 +41,6 @@ docker compose logs jupyter
 docker compose logs superset
 ```
 
-
-- **Airflow:** http://localhost:8080 Логин: `admin` Пароль: `admin`
-- **Jupyter:** http://localhost:8888 Токен: `dataengineer`
-- **Superset:** http://localhost:8088 Логин: `admin` Пароль: `admin`
-
-### PostgreSQL - База данных
-Подключение:
-- Хост: `localhost`
-- Порт: `5432`
-- База: `airflow` (для Airflow) или `learn_base` (для ваших данных)
-- Пользователь: `airflow`
-- Пароль: `airflow`
 
 
 ### Чистим Volume
