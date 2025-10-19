@@ -1,4 +1,60 @@
+
+# Новое
+
+- **Ноутбуки:** `./jupyter/notebooks/`
+- **DAG'и Airflow:** `./airflow/dags/`
+- **Плагины Airflow:** `./airflow/plugins/`
+- **Логи Airflow:** `./airflow/logs/`
+- **Данные Superset:** `./superset/data/`
+
+
+### Вход в контейнеры (для отладки):
+```bash
+# Войти в контейнер с bash
+docker exec -it jupyter-lab bash
+docker exec -it airflow-scheduler bash
+docker exec -it superset bash
+```
+
+### Просмотр логов:
+```bash
+# Все сервисы
+docker compose logs
+
+# Конкретный сервис
+docker compose logs airflow-webserver
+docker compose logs jupyter
+docker compose logs superset
+```
+
+
+- **Airflow:** http://localhost:8080 Логин: `admin` Пароль: `admin`
+- **Jupyter:** http://localhost:8888 Токен: `dataengineer`
+- **Superset:** http://localhost:8088 Логин: `admin` Пароль: `admin`
+
+### PostgreSQL - База данных
+Подключение:
+- Хост: `localhost`
+- Порт: `5432`
+- База: `airflow` (для Airflow) или `learn_base` (для ваших данных)
+- Пользователь: `airflow`
+- Пароль: `airflow`
+
+
+### Чистим Volume
+
+```bash
+# Удаляет все неиспользуемые тома (включая анонимные)
+docker volume prune
+
+# Но будьте осторожны - удалит ВСЕ неиспользуемые тома
+# Лучше сначала посмотреть что будет удалено:
+docker volume ls -f "dangling=true"
+```
+
 # Команды для запуска:
+
+### При первом запуске надо проинициализировать `Superset`
 
 ```bash
 # 2. Создаем папки для данных
@@ -18,10 +74,4 @@ docker compose exec superset superset init
 # Удалить Noname контейнеры
 docker volume prune
 ```
-
-# Доступ к сервисам:
-- Airflow: http://localhost:8080 (`admin`/`admin`)
-- Jupyter: http://localhost:8888 (пароль: `dataengineer`)
-- Superset: http://localhost:8088 (`admin`/`admin`)
-- PostgreSQL: `localhost:5432` (`airflow`/`airflow`)
 

@@ -110,10 +110,12 @@ services:
       retries: 5
 
   jupyter:
-    build:
-      context: .
-      dockerfile: Dockerfile.jupyter
+    image: jupyter/datascience-notebook:latest
     container_name: jupyter-lab
+    command: >
+      bash -c "
+        pip install -r /home/jovyan/work/requirements.txt &&
+        start-notebook.sh"
     environment:
       JUPYTER_TOKEN: "dataengineer"
       CHOWN_HOME: "yes"
@@ -121,6 +123,7 @@ services:
     volumes:
       - ./jupyter/notebooks:/home/jovyan/work
       - ./jupyter/data:/home/jovyan/data
+      - ./jupyter/requirements.txt:/home/jovyan/work/requirements.txt
     ports:
       - "8888:8888"
     networks:
