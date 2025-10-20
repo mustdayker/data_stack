@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.operators.dummy import DummyOperator
-import time
 
 # Аргументы по умолчанию для DAG
 default_args = {
@@ -33,7 +32,6 @@ with DAG(
     # Таска 2: Python функция с Hello World
     def print_hello_world():
         print("🎉 Hello World from Airflow!")
-        time.sleep(30)
         print(f"Запущено в: {datetime.now()}")
         return "Hello World выполнено успешно!"
 

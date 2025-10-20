@@ -17,7 +17,7 @@ default_args = {
 
 # Создаем DAG
 with DAG(
-        'hello_world_dag',
+        'hello_world',
         default_args=default_args,
         description='Мой первый Hello World DAG',
         schedule_interval=timedelta(days=1),  # Запускать каждый день

@@ -21,25 +21,6 @@ services:
       timeout: 10s
       retries: 3
 
-  # ДОБАВЛЕНО: Экспортер метрик для PostgreSQL
-  postgres-exporter:
-    image: prometheuscommunity/postgres-exporter:latest
-    container_name: postgres-exporter
-    environment:
-      DATA_SOURCE_NAME: "postgresql://airflow:airflow@postgres-db:5432/airflow?sslmode=disable"
-    ports:
-      - "9187:9187"
-    depends_on:
-      - postgres-db
-    networks:
-      - data-eng-net
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:9187/metrics || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
   airflow-init:
     image: apache/airflow:2.7.1
     container_name: airflow-init
@@ -80,11 +61,6 @@ services:
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
       AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
       AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL: 30
-      # ИЗМЕНЕНО: Включены метрики Airflow
-      AIRFLOW__METRICS__STATSD_ON: "true"
-      AIRFLOW__METRICS__STATSD_HOST: statsd-exporter
-      AIRFLOW__METRICS__STATSD_PORT: 9125
-      AIRFLOW__METRICS__STATSD_PREFIX: "airflow"
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
@@ -92,7 +68,6 @@ services:
     depends_on:
       - postgres-db
       - airflow-init
-      - statsd-exporter
     networks:
       - data-eng-net
     restart: unless-stopped
@@ -101,9 +76,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-
-
-
 
   airflow-webserver:
     image: apache/airflow:2.7.1
@@ -119,12 +91,6 @@ services:
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
       AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
       AIRFLOW__WEBSERVER__WORKERS: 2
-      # ИЗМЕНЕНО: Включим метрики для Prometheus
-      AIRFLOW__METRICS__METRICS_ENABLED: "true"
-      AIRFLOW__METRICS__STATSD_ON: "true"
-      AIRFLOW__METRICS__STATSD_HOST: statsd-exporter
-      AIRFLOW__METRICS__STATSD_PORT: 9125
-      AIRFLOW__METRICS__STATSD_PREFIX: "airflow"
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
@@ -134,7 +100,6 @@ services:
     depends_on:
       - postgres-db
       - airflow-init
-      - statsd-exporter
     networks:
       - data-eng-net
     restart: unless-stopped
@@ -144,58 +109,8 @@ services:
       timeout: 10s
       retries: 5
 
-  # ДОБАВЛЕНО: Node exporter для системных метрик
-  node-exporter:
-    image: prom/node-exporter:latest
-    container_name: node-exporter
-    command:
-      - '--path.rootfs=/host'
-      - '--path.procfs=/host/proc'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
-    ports:
-      - "9100:9100"
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    networks:
-      - data-eng-net
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:9100/metrics || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-
-
-
-
-
-  # ДОБАВЛЕНО: StatsD экспортер для преобразования метрик Airflow в Prometheus
-  statsd-exporter:
-    image: prom/statsd-exporter:latest
-    container_name: statsd-exporter
-    command:
-      - --web.listen-address=:9102
-      - --statsd.listen-udp=:9125
-      - --statsd.listen-tcp=:9125
-    ports:
-      - "9102:9102"
-      - "9125:9125"
-    networks:
-      - data-eng-net
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:9102/metrics || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
   jupyter:
-    build:
-      context: .
-      dockerfile: Dockerfile.jupyter
+    image: jupyter/datascience-notebook:latest
     container_name: jupyter-lab
     environment:
       JUPYTER_TOKEN: "dataengineer"
@@ -242,82 +157,8 @@ services:
       retries: 5
       start_period: 60s
 
-  # ДОБАВЛЕНО: Prometheus для сбора метрик
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/etc/prometheus/console_libraries'
-      - '--web.console.templates=/etc/prometheus/consoles'
-      - '--storage.tsdb.retention.time=200h'
-      - '--web.enable-lifecycle'
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./monitoring/prometheus:/etc/prometheus
-      - prometheus_data:/prometheus
-    networks:
-      - data-eng-net
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:9090/-/healthy || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  # ДОБАВЛЕНО: Grafana для визуализации метрик
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    environment:
-      GF_SECURITY_ADMIN_PASSWORD: "admin"
-      GF_USERS_ALLOW_SIGN_UP: "false"
-      GF_DASHBOARDS_JSON_ENABLED: "true"
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
-      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
-      - grafana_data:/var/lib/grafana
-    networks:
-      - data-eng-net
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  # ДОБАВЛЕНО: cAdvisor для мониторинга ресурсов контейнеров
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    container_name: cadvisor
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
-    devices:
-      - /dev/kmsg
-    ports:
-      - "8081:8080"
-    networks:
-      - data-eng-net
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:8080/healthz || exit 1"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-
-
 volumes:
   postgres_data:
-  prometheus_data:
-  grafana_data:
 
 networks:
   data-eng-net:
