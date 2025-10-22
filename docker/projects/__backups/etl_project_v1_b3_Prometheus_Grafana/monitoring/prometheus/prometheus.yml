@@ -20,6 +20,13 @@ scrape_configs:
       - targets: ['statsd-exporter:9102']
     scrape_interval: 30s
 
+  # ИСПРАВЛЕНО: Убираем airflow-webserver, т.к. метрики идут через statsd
+  # - job_name: 'airflow-webserver'
+  #   static_configs:
+  #     - targets: ['airflow-webserver:8080']
+  #   metrics_path: /metrics
+  #   scrape_interval: 30s
+
   - job_name: 'node-exporter'
     static_configs:
       - targets: ['node-exporter:9100']
@@ -30,11 +37,3 @@ scrape_configs:
     static_configs:
       - targets: ['cadvisor:8080']
     scrape_interval: 30s
-
-  # НОВОЕ:
-  - job_name: 'minio'
-    metrics_path: /minio/v2/metrics/cluster
-    static_configs:
-      - targets: ['minio:9000']
-
-  # Spark History Server тоже можно мониторить, но он не даёт много метрик

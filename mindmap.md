@@ -1,5 +1,5 @@
 ---
-title: Стек дата-инженера
+title: Data Engineer
 markmap:
   colorFreezeLevel: 2
   maxWidth: 250
@@ -7,99 +7,60 @@ markmap:
 
 https://markmap.js.org/
 
-## Ядро (обязательно)
+## **Ядро (обязательно)**
 
-- Языки и инструменты
+- **Языки и инструменты**
   - `Python`
   - `SQL`
   - `Bash`
-- Git и основы DevOps
+  - `Jupyter Notebook`
+- **Git и основы DevOps**
   - `Git`
+  - `CI/CD`
   - `Linux CLI`
-- Работа с данными
+- **Работа с данными**
   - `ETL vs ELT`
-  - `Моделирование: звезда, снежинка`
+  - `Звезда / Снежинка`
   - `CSV`
   - `JSON`
   - `Parquet`
   - `ORC`
   - `Avro`
-- СУБД
+- **СУБД**
   - `PostgreSQL`
   - `MySQL`
   - `DuckDB`
   - `ClickHouse`
+  - `GreenPlum`
 
-## Обработка данных
+## **Обработка данных**
 
-### Batch (пакетная)
-- Apache Spark
-  - `local[*]`
-  - `Кластер в Docker`
-  - `partitioning`
-  - `broadcast joins`
-- Оркестрация
-  - `Airflow`
-  - `Prefect`
-  - `Dagster`
+### **Batch**
+- `Apache Spark`
 
-### Streaming (потоковая)
+### **Streaming**
 - `Kafka`
-- `Redpanda`
 - `Spark Structured Streaming`
-- `Flink`
 
-## Хранилище и Data Lake
+## **Хранилище и Data Lake**
 
-- Объектное хранилище
-  - `MinIO`
-  - `AWS S3`
-  - `GCS`
-- Таблицы нового поколения
-  - `Delta Lake`
-  - `Apache Iceberg`
-  - `Apache Hudi`
-- Архитектура
-  - `Lakehouse`
+- `MinIO` / `AWS S3`
+- `Delta Lake`
+- `Lakehouse`
 
-## Инфраструктура
+## **Инфраструктура**
 
-- Контейнеризация
-  - `Docker`
-  - `docker-compose.yml`
-  - `Портабельность`
-- Мониторинг
-  - `Prometheus`
-  - `Grafana`
-  - `Экспорт метрик`
-- IaC (опционально)
-  - `Terraform`
-- Логирование
-  - `Loki`
-  - `Grafana`
-  - `ELK`
+- `Airflow`
+- `Docker`
+- `Prometheus` + `Grafana`
 
-## Облачные платформы (по желанию)
+## **Облачные платформы**
 
-- AWS
-  - `Glue`
-  - `S3`
-  - `Redshift`
-  - `MSK`
-- GCP
-  - `BigQuery`
-  - `Dataflow`
-  - `Pub/Sub`
-- Azure
-  - `Synapse`
-  - `ADLS`
-  - `Event Hubs`
+- `AWS (S3, Glue, Redshift)`
+- `GCP (BigQuery, Dataflow)`
+- `Azure (Synapse, ADLS)`
 
-## Инструменты для качества и ML
+## **Качество и ML**
 
 - `dbt`
 - `Great Expectations`
-- `Soda Core`
-- `MLflow`
-- `DVC`
-- `Jupyter Notebook`
