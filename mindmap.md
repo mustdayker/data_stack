@@ -7,7 +7,7 @@ markmap:
 
 https://markmap.js.org/
 
-## **Ядро (обязательно)**
+## **Core Stack**
 
 - **Языки и инструменты**
   - `Python`
@@ -30,15 +30,17 @@ https://markmap.js.org/
 - **СУБД**
   - `PostgreSQL`
   - `MySQL`
-  - `DuckDB`
   - `ClickHouse`
   - `GreenPlum`
+  - `MongoDB`
+  - `Redis`
+  - `DuckDB`
 
 ## **Обработка данных**
 
 ### **Batch**
 - `Apache Spark`
-
+- `Spark history server`
 ### **Streaming**
 - `Kafka`
 - `Spark Structured Streaming`
@@ -48,8 +50,7 @@ https://markmap.js.org/
 - `MinIO` / `AWS S3`
 - `Delta Lake`
 - `Lakehouse`
-- `MongoDB`
-- `Redis`
+
 
 ## **Инфраструктура**
 
