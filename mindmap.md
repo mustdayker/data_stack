@@ -12,6 +12,7 @@ https://markmap.js.org/
 - **Языки и инструменты**
   - `Python`
   - `SQL`
+  - `noSQL`
   - `Bash`
   - `Jupyter Notebook`
 - **Git и основы DevOps**
@@ -47,6 +48,8 @@ https://markmap.js.org/
 - `MinIO` / `AWS S3`
 - `Delta Lake`
 - `Lakehouse`
+- `MongoDB`
+- `Redis`
 
 ## **Инфраструктура**
 
