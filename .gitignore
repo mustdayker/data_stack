@@ -28,7 +28,7 @@ $RECYCLE.BIN/
 .ipynb_checkpoints/
 
 
-.idea
+.idea/
 
 
 # End of https://www.toptal.com/developers/gitignore/api/windows
