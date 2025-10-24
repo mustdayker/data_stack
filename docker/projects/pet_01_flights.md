@@ -3,14 +3,14 @@
 
 Там есть такой набор сервисов:
 
-PostgreSQL
-Airflow
-Superset
-Prometheus 
-Grafana
-Jupyterlab
-MinIO
-Spark
+- `PostgreSQL`
+- `Airflow`
+- `Superset`
+- `Prometheus` 
+- `Grafana`
+- `Jupyterlab`
+- `MinIO`
+- `Spark`
 
 Я учусь профессии Data Engineer. 
 
@@ -30,6 +30,12 @@ Spark
 
 🔗 Прямая ссылка на архивы (например, за 2023 год):  
 https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGK&QO_fu146_anil=3&gnoyr_VQ=None&airline=All&Airport=All&dtId=975&geo=All&crp=All&geo=All&crp=All&flg=All&flg=All&Submit=Submit
+
+https://transtats.bts.gov/PREZIP/
+
+- `On_Time_Reporting_Carrier_On_Time_Performance_(1987_present)_2023_1`
+
+https://catalog.data.gov/dataset/on-time-performance
 
 Для старта возьми **данные за 2020–2023 годы** (по ~7–10 млн строк в год). Это даст тебе **~30–40 млн строк**, что отлично подходит для Spark.
 

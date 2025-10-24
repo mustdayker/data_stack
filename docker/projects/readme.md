@@ -22,3 +22,8 @@
 ## Пет проекты
 
 - [`pet_01_flights.md`](pet_01_flights.md) - ETL-пайплайн анализа авиаперелётов в США
+
+## Где брать датасеты
+
+- [`https://www.kaggle.com/datasets`](https://www.kaggle.com/datasets)
+- [`https://catalog.data.gov/dataset`](https://catalog.data.gov/dataset/)
