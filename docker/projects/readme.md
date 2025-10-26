@@ -25,5 +25,15 @@
 
 ## Где брать датасеты
 
+- [`https://vc.ru/links/1977139-gde-najti-besplatnye-datasety-dlya-proyektov`](https://vc.ru/links/1977139-gde-najti-besplatnye-datasety-dlya-proyektov)
 - [`https://www.kaggle.com/datasets`](https://www.kaggle.com/datasets)
 - [`https://catalog.data.gov/dataset`](https://catalog.data.gov/dataset/)
+- [`https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page`](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page)
+
+## To Do List
+- Spark History Server
+- Kubernetes
+- Clickhouse
+- Streaming
+- Data Quality
+- 
