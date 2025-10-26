@@ -1,2 +1,0 @@
-CREATE DATABASE learn_base;
-GRANT ALL PRIVILEGES ON DATABASE learn_base TO airflow;
